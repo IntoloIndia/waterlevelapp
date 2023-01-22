@@ -48,9 +48,9 @@ const getPrevLevel = async (registeredId) => {
   }
 };
 
-const getLEDStatus = async (registeredId) => {
+const getMotorStatus = async (registeredId) => {
   try {
-    const res = await fetch(API_URL + `led-status/${registeredId}`, {
+    const res = await fetch(API_URL + `motor-status/${registeredId}`, {
       method: 'get',
       headers: {
         'Content-Type': 'application/json',
@@ -77,4 +77,4 @@ const getSUMPStatus = async (registeredId) => {
   }
 };
 
-export {getLEDStatus, getImage, getWaterLevel,getPrevLevel,getSUMPStatus};
+export { getImage, getWaterLevel,getPrevLevel,getSUMPStatus,getMotorStatus};

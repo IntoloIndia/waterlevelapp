@@ -20,7 +20,7 @@ import ProgressBar from 'react-native-animated-progress';
 import {
   getImage,
   getWaterLevel,
-  getLEDStatus,
+  getMotorStatus,
   getSUMPStatus,
   getPrevLevel,
 } from '../controllers/getImageController';
@@ -108,15 +108,15 @@ const Home = ({navigation}) => {
     // }
   };
 
-  const fetchLedStatus = async () => {
+  const fetchMotorStatus = async () => {
     // if (checkIfKeyExist(registeredId, 'product_id')) {
     try {
       // if (registeredId) {
       const temp = await credFunc();
-      const res = await getLEDStatus(temp);
+      const res = await getMotorStatus(temp);
 
-      if (res.data != null) {
-        setIsEnabled(res.data.led_status == 1 ? true : false);
+      if (res.status ==200) {
+        setIsEnabled(res.data.motor_status);
         if (waterLevelData.motor_notification == true) {
         }
       }
@@ -234,7 +234,7 @@ const Home = ({navigation}) => {
     setRefreshing(true);
     getStreamImage();
     WaterLevel();
-    fetchLedStatus();
+    fetchMotorStatus();
     fetchSumpStatus();
     wait(1000).then(() => setRefreshing(false));
   }, []);
@@ -255,7 +255,7 @@ const Home = ({navigation}) => {
       fetchSumpStatus();
       // getPrevWaterLevel();
       // socket.emit('join_room', 'fronte');
-      fetchLedStatus();
+      fetchMotorStatus();
     }, 4000);
 
     return () => {
@@ -586,7 +586,7 @@ const Home = ({navigation}) => {
               </Text>
             </View>
             <Text style={{fontSize: 14, color: COLORS.gray}}>
-              Pump{'\n'}Status
+              Motor{'\n'}Status
             </Text>
           </View>
         </View>
