@@ -90,6 +90,7 @@ const RemoteControl = () => {
       sump_status: status,
     };
     const res = await updateMotorStatus(formData, unique_id);
+    // console.log(res)
     if (res.status == 200) {
       getSump();
     }

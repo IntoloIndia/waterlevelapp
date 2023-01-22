@@ -13,6 +13,7 @@ const login = require('../assets/icons/login.png');
 const logout = require('../assets/icons/logout.png');
 const right = require('../assets/icons/right.png');
 const addProduct = require('../assets/icons/add.png');
+const notification = require('../assets/icons/notification.png');
 //water
 const w_uses = require('../assets/icons/water/water_uses.png');
 const w_leakage = require('../assets/icons/water/leakage.png');
@@ -35,6 +36,7 @@ export default {
   logout,
   right,
   addProduct,
+  notification,
 
   //water
   w_uses,
