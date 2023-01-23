@@ -1,125 +1,122 @@
-import React from 'react';
-import {Text, View, RefreshControl, ScrollView, Image} from 'react-native';
+import React, {useState} from 'react';
+import {
+  Text,
+  View,
+  Image,
+  FlatList,
+  ImageBackground,
+  TouchableOpacity,
+} from 'react-native';
 import {COLORS, icons} from '../constants';
-import {getWaterLevelSettings} from '../controllers/SettingsController';
-import {getObjectData, getData} from '../utils/localStorage.js';
+import socketIOClient from 'socket.io-client';
 
-const Notification = ({title, message, icon}) => {
+const Notifications = ({title, message, date, time}) => {
   return (
-    <View
+    <TouchableOpacity
       style={{
-        backgroundColor: COLORS.cyan_300,
-        elevation: 10,
-        padding: 12,
-        borderRadius: 6,
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 10,
+        backgroundColor: '#FFFFFF',
+        padding: 10,
+        paddingHorizontal: 15,
+        marginBottom: 12,
+        borderWidth: 0.5,
+        borderColor: COLORS.lightGray1,
+        borderRadius: 5,
+        elevation: 2,
       }}>
-      <View
-        style={{
-          borderRadius: 50,
-          padding: 10,
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: COLORS.cyan_700,
-          elevation: 5,
-        }}>
-        <Image
-          source={icon}
-          style={{height: 30, width: 30, tintColor: COLORS.white}}
-        />
+      <View style={{flex: 0.2}}>
+        <ImageBackground
+          style={{
+            height: 50,
+            width: 50,
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: COLORS.red_100,
+            borderRadius: 30,
+          }}>
+          <Image
+            style={{
+              height: 20,
+              width: 20,
+              tintColor: COLORS.red_600,
+            }}
+            source={icons.notification}
+          />
+        </ImageBackground>
       </View>
-      <View style={{marginHorizontal: 6}}></View>
-      <View style={{flex: 1}}>
-        <Text style={{fontSize: 16, fontWeight: 'bold', color: COLORS.black}}>
+      <View style={{flex: 0.8}}>
+        <Text
+          style={{
+            fontSize: 16,
+            fontWeight: '600',
+            color: COLORS.darkGray,
+            textTransform: 'capitalize',
+          }}>
           {title}
         </Text>
-        <Text style={{fontSize: 14, color: COLORS.darkGray}}>{message}</Text>
+        <Text
+          style={{
+            fontSize: 14,
+            color: COLORS.blue,
+            fontWeight: '400',
+          }}>
+          {message}
+        </Text>
+        <View
+          style={{
+            marginTop: 5,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <Text style={{fontSize: 10, color: COLORS.darkGray}}>
+            {date}
+            {',  '}
+          </Text>
+          <Text style={{fontSize: 10, color: COLORS.darkGray}}>{time}</Text>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
 const ShowNotification = () => {
-  const [refreshing, setRefreshing] = React.useState(false);
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-      getNotificationSettings();
-    }, 2000);
-  }, []);
-
-  
-  let unique_id;
-
-  const credFunc = async () => {
-    try {
-      const temp_product_id = await getData('primary_product');
-      unique_id = temp_product_id;
-      let us_cred = await getObjectData('user_credentials');
-      return us_cred._id;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const [uses, setUses] = React.useState(false);
-  const [leakage, setLeakage] = React.useState(false);
-  const [quality, setQuality] = React.useState(false);
-  const [needCleaning, setNeedCleaning] = React.useState(false);
-
-  const getNotificationSettings = async () => {
-    await credFunc();
-    const res = await getWaterLevelSettings(unique_id);
-    if (res.status === 200) {
-      setUses(res.data.uses_notification);
-      setLeakage(res.data.leakage_notification);
-      setQuality(res.data.quality_notification);
-      setNeedCleaning(res.data.need_cleaning_notification);
-    }
-  };
+  let io = socketIOClient('http://192.168.0.117:8000');
+  const [notificationsData, setNotificationsData] = useState();
 
   React.useEffect(() => {
-    getNotificationSettings();
+    io.on('connect', () => {
+      console.log('Client-side connected');
+    });
+
+    io.on('notification', data => {
+      console.log(data);
+      setNotificationsData(data);
+    });
   }, []);
 
   return (
-    <ScrollView
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-      style={{margin: 10}}>
-      {uses && (
-        <Notification
-          title={'Uses'}
-          message={'Over use of water is found please save water'}
-          icon={icons.w_uses}
-        />
+    <View style={{flex: 1, backgroundColor: '#DCDCDC', padding: 16}}>
+      {notificationsData ? (
+        Notifications({
+          title: notificationsData.title,
+          message: notificationsData.message,
+          date: '17/01/2023',
+          time: '01:54 PM',
+        })
+      ) : (
+        <Text
+          style={{
+            alignSelf: 'center',
+            marginTop: 300,
+            fontSize: 14,
+            color: COLORS.darkGray,
+            textTransform: 'uppercase',
+          }}>
+          No notifications!
+        </Text>
       )}
-      {leakage && (
-        <Notification
-          title={'Leakage'}
-          message={'There is no leakage found in the water distribution system'}
-          icon={icons.w_leakage}
-        />
-      )}
-      {quality && (
-        <Notification
-          title={'Quality'}
-          message={'Water is safe within an acceptable PH range'}
-          icon={icons.w_quality}
-        />
-      )}
-      {needCleaning && (
-        <Notification
-          title={'Need Cleaning'}
-          message={"Doesn't need to clean the water tank"}
-          icon={icons.w_tank_clean}
-        />
-      )}
-    </ScrollView>
+    </View>
   );
 };
 

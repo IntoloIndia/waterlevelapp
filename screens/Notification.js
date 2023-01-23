@@ -80,48 +80,48 @@ const Notification = () => {
       setQuality(res.data.quality_notification);
       setNeedCleaning(res.data.need_cleaning_notification);
 
-      if (res.data.uses_notification) {
-        pushNotification(
-          'Uses',
-          'Over use of water is found please save water',
-        );
-      }
-      if (res.data.leakage_notification) {
-        pushNotification(
-          'Leakage',
-          'There is no leakage found in the water distribution system',
-        );
-      }
-      if (res.data.quality_notification) {
-        pushNotification(
-          'Quality',
-          'Water is safe within an acceptable PH range',
-        );
-      }
-      if (res.data.need_cleaning_notification) {
-        pushNotification(
-          'Need cleaning',
-          "Doesn't need to clean the water tank",
-        );
-      }
+      // if (res.data.uses_notification) {
+      //   pushNotification(
+      //     'Uses',
+      //     'Over use of water is found please save water',
+      //   );
+      // }
+      // if (res.data.leakage_notification) {
+      //   pushNotification(
+      //     'Leakage',
+      //     'There is no leakage found in the water distribution system',
+      //   );
+      // }
+      // if (res.data.quality_notification) {
+      //   pushNotification(
+      //     'Quality',
+      //     'Water is safe within an acceptable PH range',
+      //   );
+      // }
+      // if (res.data.need_cleaning_notification) {
+      //   pushNotification(
+      //     'Need cleaning',
+      //     "Doesn't need to clean the water tank",
+      //   );
+      // }
     }
   };
 
   React.useEffect(() => {
     credFunc();
 
-    PushNotification.createChannel(
-      {
-        channelId: '1',
-        channelName: 'My channel',
-        channelDescription: 'A channel to categorise your notifications',
-        playSound: true,
-        soundName: 'default',
-        importance: Importance.HIGH,
-        vibrate: true,
-      },
-      //   created => console.log(`createChannel returned '${created}'`),
-    );
+    // PushNotification.createChannel(
+    //   {
+    //     channelId: '1',
+    //     channelName: 'My channel',
+    //     channelDescription: 'A channel to categorise your notifications',
+    //     playSound: true,
+    //     soundName: 'default',
+    //     importance: Importance.HIGH,
+    //     vibrate: true,
+    //   },
+    //   //   created => console.log(`createChannel returned '${created}'`),
+    // );
 
     getNotificationSettings();
   }, []);
