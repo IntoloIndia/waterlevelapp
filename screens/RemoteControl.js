@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, Switch} from 'react-native';
 import {FONTS, COLORS, SIZES} from '../constants';
 import {postRemoteControl} from '../controllers/RemoteControlController';
-import {getLEDStatus} from '../controllers/getImageController';
+import {getMotorStatus} from '../controllers/getImageController';
 import {useDispatch} from 'react-redux';
 import {addMode} from '../redux/modeSlice.js';
 import {
@@ -24,7 +24,7 @@ const RemoteControl = () => {
   const [isEnabled, setIsEnabled] = useState(false);
 
   const user = useSelector(state => state.userCreds);
-
+ 
   const credFunc = async () => {
     try {
       unique_id = await getData('primary_product');
@@ -71,14 +71,15 @@ const RemoteControl = () => {
     const formData = {led_status: status};
     const response = await postRemoteControl(formData);
     if (response.status === 200) {
-      fetchLedStatus();
+      fetchMotorStatus();
     }
   };
 
-  const fetchLedStatus = async () => {
-    const res = await getLEDStatus();
+  const fetchMotorStatus = async () => {
+    await credFunc();
+    const res = await getMotorStatus(unique_id);
     if (res.status === 200) {
-      setMode(res.data.led_status);
+      setMode(res.data.motor_status);
     }
   };
 
@@ -137,7 +138,7 @@ const RemoteControl = () => {
 
   React.useEffect(() => {
     credFunc();
-    fetchLedStatus();
+    fetchMotorStatus();
     getSump();
     getBore();
   }, []);

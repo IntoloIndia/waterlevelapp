@@ -1,5 +1,4 @@
-import React, {useState, useEffect} from 'react';
-import {API_URL} from '@env';
+import React, {useState} from 'react';
 import {
   Text,
   View,
@@ -32,27 +31,27 @@ import {addMode} from '../redux/modeSlice';
 import socketIOClient from 'socket.io-client';
 import {addIntervalMode} from '../redux/intervalSlice';
 import {getData} from '../utils/localStorage';
-
 import {checkIfKeyExist} from '../utils/customFunctions';
 
 // const END_POINT = 'http://192.168.0.117:8000';
-
 // let socket = socketIOClient(END_POINT);
 
 const wait = timeout => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
 
-const Home = ({navigation}) => {
+const Home = () => {
   let cls_interval;
   let temp_storeRegistId;
   let temp_product_name;
   let temp_registeredId = useSelector(state => state.product);
 
+
   const [productName, setProductName] = useState('');
   const [registeredId, setRegisteredId] = useState(temp_registeredId);
 
   const interval = useSelector(state => state.intervalMode);
+
 
   const [streamImage, setStreamImage] = React.useState();
   const [date, setDate] = React.useState();
@@ -90,6 +89,7 @@ const Home = ({navigation}) => {
     }
   };
 
+
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
   const getStreamImage = async () => {
@@ -115,7 +115,7 @@ const Home = ({navigation}) => {
       const temp = await credFunc();
       const res = await getMotorStatus(temp);
 
-      if (res.status ==200) {
+      if (res.status == 200) {
         setIsEnabled(res.data.motor_status);
         if (waterLevelData.motor_notification == true) {
         }
@@ -414,7 +414,9 @@ const Home = ({navigation}) => {
                 // borderColor: COLORS.black,
               }}
               // source={{uri: streamImage}}
-              source={streamImage ? {uri: streamImage} : images.image_not_found1}
+              source={
+                streamImage ? {uri: streamImage} : images.image_not_found1
+              }
               // source={{uri: streamImage?streamImage:images.image_not_found}}
             />
           </ImageZoom>
@@ -613,11 +615,11 @@ const Home = ({navigation}) => {
             source={streamImage ? {uri: streamImage} : images.image_not_found1}
             resizeMode={'stretch'}
             style={{
-
-              height: square == true ? SIZES.height*0.25 : SIZES.height*0.25,
-              width: square == true ? SIZES.width*0.9 : SIZES.width*0.52,           
+              height:
+                square == true ? SIZES.height * 0.25 : SIZES.height * 0.25,
+              width: square == true ? SIZES.width * 0.9 : SIZES.width * 0.52,
               // height: square == true ? 200 : 200,
-              // width: square == true ? 320 : 200,           
+              // width: square == true ? 320 : 200,
 
               alignSelf: 'center',
               borderRadius: square == true ? 10 : 100,
