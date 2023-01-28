@@ -1,23 +1,16 @@
 import React, {useState, useEffect} from 'react';
-import {API_URL} from '@env';
 import {
   Text,
   View,
   Image,
   TouchableOpacity,
-  ScrollView,
-  RefreshControl,
   StyleSheet,
   Modal,
-  //   TextInput,
-  Pressable,
   FlatList,
   TouchableWithoutFeedback,
 } from 'react-native';
-import Lottie from 'lottie-react-native';
 import {FONTS, COLORS, icons, SIZES} from '../constants';
-import DropDownPicker from 'react-native-dropdown-picker';
-import {TextInput, Divider} from 'react-native-paper';
+import {TextInput} from 'react-native-paper';
 import {getData, storeData, getObjectData} from '../utils/localStorage';
 import {CustomToast} from '../componets';
 import {
@@ -26,7 +19,6 @@ import {
   updateProduct,
   makeProductPrimary,
 } from '../controllers/productController';
-
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {useDispatch} from 'react-redux';
@@ -39,6 +31,7 @@ const Products = ({navigation}) => {
   const creds = useSelector(state => state.userCreds);
   const interval = useSelector(state => state.intervalMode);
   const [userId, setUserId] = useState('');
+
   // let userId;
   let lg_tkn;
   let us_cred;
@@ -47,15 +40,14 @@ const Products = ({navigation}) => {
     try {
       lg_tkn = await getData('login_token');
       us_cred = await getObjectData('user_credentials');
-      
-  
+
       if (Object.keys(creds).length === 0) {
         // userId = us_cred._id;
-        return us_cred._id;
+        return us_cred.id;
         // return setUserId(us_cred._id);
       } else {
         // userId = creds.user_credentials._id;
-        return creds.user_credentials._id;
+        return creds.user_credentials.id;
         // return setUserId(creds.user_credentials._id);
       }
     } catch (error) {
@@ -96,10 +88,12 @@ const Products = ({navigation}) => {
     const data = {
       product_id: productUniqueId,
       service_used_in: serviceUsedIn,
-      user_id: userId,
+      // user_id: userId,
     };
 
-    const temp = await addProduct(data);
+    const temp = await addProduct(userId,data);
+
+    alert(temp.message)
 
     if (temp.status == 200) {
       setTimeout(() => {
@@ -382,7 +376,7 @@ const Products = ({navigation}) => {
             }, 700);
           }}>
           <View style={{}}>
-            <Text style={{...FONTS.body3}}>{item.service_used_in}</Text>
+            <Text style={{...FONTS.body3, color:COLORS.darkGray}}>{item.service_used_in}</Text>
           </View>
         </TouchableOpacity>
         <Entypo
@@ -697,6 +691,7 @@ const Products = ({navigation}) => {
     </View>
   );
 };
+
 export default Products;
 const styles = StyleSheet.create({
   shadow: {

@@ -30,7 +30,6 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import {TextInput} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-
 import {useSelector} from 'react-redux';
 import {CustomToast} from '../componets';
 import {Login} from './userCredentials';
@@ -56,7 +55,7 @@ const Settings = ({navigation}) => {
   // const navigation = useNavigation();
   // const { setToken } = React.useContext(Auth)
   // let water_tank_height = 100;
-  const [waterTankHeight, setWaterTankHeight] = useState(100)
+  const [waterTankHeight, setWaterTankHeight] = useState(100);
   let lg_tkn;
   let us_cred;
   let temp_storeRegistId;
@@ -219,7 +218,7 @@ const Settings = ({navigation}) => {
       setSubmitToast(true);
       setTimeout(() => {
         setSubmitToast(false);
-        isEnabledManually === false?setTankHeightModal(false):null
+        isEnabledManually === false ? setTankHeightModal(false) : null;
       }, 900);
       setMssg(response.message);
       setStatusCode(response.status);
@@ -268,13 +267,12 @@ const Settings = ({navigation}) => {
   const logout = async () => {
     try {
       await credFunc();
-
       const body = {
         refresh_token:
           Object.keys(creds).length === 0 ? lg_tkn : creds.refresh_token,
       };
-      const temp = await UserlogOut(body);
 
+      const temp = await UserlogOut(body);
       if (temp.status == 200) {
         setStatusCode(temp.status);
         setMssg(temp.data);
@@ -285,10 +283,13 @@ const Settings = ({navigation}) => {
           setSubmitToast(false);
         }, 600);
 
+        //new
+        removeData('user_credentials')
+        //
         removeData('login_token');
         removeData('user_credential_body');
-
         storeObjectData('login_token_status', false);
+
         setTimeout(() => {
           navigation.navigate('Login');
         }, 400);
@@ -473,7 +474,10 @@ const Settings = ({navigation}) => {
           }}>
           <View>
             <Text style={{...FONTS.h2, fontWeight: '600', color: COLORS.white}}>
-              Overhead Water Tank{'\n'}Height {waterTankHeight? parseFloat(waterTankHeight).toFixed(2):'0' +' '+ unit} 
+              Overhead Water Tank{'\n'}Height{' '}
+              {waterTankHeight
+                ? parseFloat(waterTankHeight).toFixed(2)
+                : '0' + ' ' + unit}
             </Text>
           </View>
           <TouchableOpacity

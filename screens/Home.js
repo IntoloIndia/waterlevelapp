@@ -45,14 +45,9 @@ const Home = () => {
   let temp_storeRegistId;
   let temp_product_name;
   let temp_registeredId = useSelector(state => state.product);
-
-
   const [productName, setProductName] = useState('');
   const [registeredId, setRegisteredId] = useState(temp_registeredId);
-
   const interval = useSelector(state => state.intervalMode);
-
-
   const [streamImage, setStreamImage] = React.useState();
   const [date, setDate] = React.useState();
   const [time, setTime] = React.useState();
@@ -89,7 +84,6 @@ const Home = () => {
     }
   };
 
-
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
   const getStreamImage = async () => {
@@ -98,6 +92,7 @@ const Home = () => {
       // if (registeredId) {
       const temp = await credFunc();
       const res = await getImage(temp);
+
       setStreamImage(res.image);
       setDate(res.date);
       setTime(res.time);
@@ -163,7 +158,7 @@ const Home = () => {
 
       setRegisteredId(temp);
       const res = await getWaterLevel(temp);
-      if (res != undefined) {
+      if (res.status === 200) {
         // if (
         //   res.data.led_status == 1 &&
         //   prevalue == res.data.water_level &&
@@ -267,6 +262,7 @@ const Home = () => {
   // useEffect(() => {
   //   await updateData(id, state, setState); // API call
   // }, []);
+ 
 
   function renderWarningModal() {
     return (
@@ -393,31 +389,22 @@ const Home = () => {
             // imageHeight={'50%'}
             onClick={() => {
               setImageView(false);
-            }}
-            // onDoubleClick={()=>{setImageView(false)}}
-          >
+            }}>
             <Image
               resizeMode={streamImage ? 'cover' : 'contain'}
-              // resizeMode="cover"
               style={{
                 // width: square == true ? '98%' : '98%',
                 // height: square == true ? '50%' : '50%',
                 width: square == true ? SIZES.width * 0.99 : SIZES.width * 0.99,
-
                 height:
                   square == true ? SIZES.height * 0.33 : SIZES.height * 0.33,
-
                 marginTop: SIZES.height * 0.3,
                 alignSelf: 'center',
                 borderRadius: 5,
-                // borderWidth: 1,
-                // borderColor: COLORS.black,
               }}
-              // source={{uri: streamImage}}
               source={
                 streamImage ? {uri: streamImage} : images.image_not_found1
               }
-              // source={{uri: streamImage?streamImage:images.image_not_found}}
             />
           </ImageZoom>
         </View>

@@ -74,7 +74,7 @@ const Notification = () => {
   const getNotificationSettings = async () => {
     await credFunc();
     const res = await getWaterLevelSettings(unique_id);
-    if (res.status === 200) {
+    if (!res) {
       setUses(res.data.uses_notification);
       setLeakage(res.data.leakage_notification);
       setQuality(res.data.quality_notification);
@@ -150,7 +150,7 @@ const Notification = () => {
       </Text>
 
       <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 5}}>
-        <View style={{backgroundColor: COLORS.white, borderRadius: 50}}>
+        <View style={{backgroundColor: COLORS.darkGray, borderRadius: 50}}>
           <CheckBox
             value={uses}
             onValueChange={value => {
@@ -171,7 +171,7 @@ const Notification = () => {
         </Text>
       </View>
       <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 5}}>
-        <View style={{backgroundColor: COLORS.white, borderRadius: 50}}>
+        <View style={{backgroundColor: COLORS.darkGray, borderRadius: 50}}>
           <CheckBox
             value={leakage}
             onValueChange={value => {
@@ -192,7 +192,7 @@ const Notification = () => {
         </Text>
       </View>
       <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 5}}>
-        <View style={{backgroundColor: COLORS.white, borderRadius: 50}}>
+        <View style={{backgroundColor: COLORS.darkGray, borderRadius: 50}}>
           <CheckBox
             value={quality}
             onValueChange={value => {
@@ -213,7 +213,7 @@ const Notification = () => {
         </Text>
       </View>
       <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 5}}>
-        <View style={{backgroundColor: COLORS.white, borderRadius: 50}}>
+        <View style={{backgroundColor: COLORS.darkGray, borderRadius: 50}}>
           <CheckBox
             value={needCleaning}
             onValueChange={value => {

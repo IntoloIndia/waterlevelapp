@@ -1,8 +1,8 @@
 import {API_URL} from '@env';
 
-const addProduct = async inputs => {
+const addProduct = async (user_id,inputs) => {
   try {
-    const resp = await fetch(`${API_URL}add-product`, {
+    const resp = await fetch(`${API_URL}add-product/${user_id}`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(inputs),

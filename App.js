@@ -1,18 +1,15 @@
 import React, {useEffect, useState} from 'react';
-// import { useAppState } from '@react-native-community/hooks'
-import {AppState, View, Text,TouchableOpacity,Image} from 'react-native';
-import Tabs from './navigation/Tabs';
+import {AppState, View, Text, TouchableOpacity} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Login, Register, ForgetPassword} from './screens/userCredentials';
-import {Home, Products, RemoteControl, Settings, WaterUses} from './screens';
-import {loginUser} from './controllers/LoginController';
-import {icons} from './constants/index.js';
 import {Provider} from 'react-redux';
+
+import {getData} from './utils/localStorage.js';
+import Tabs from './navigation/Tabs';
 import store from './redux/store.js';
+import {Home, Products, WaterUses} from './screens';
+import {Login, Register, ForgetPassword} from './screens/userCredentials';
 import {COLORS} from './constants';
-import {getData, getObjectData} from './utils/localStorage.js';
-import {Button} from 'react-native-paper';
 
 const Stack = createNativeStackNavigator();
 
@@ -123,10 +120,10 @@ const App = () => {
                 backgroundColor: Platform.OS === 'android' ? COLORS.white : '',
               },
               headerTintColor:
-                Platform.OS === 'android' ? COLORS.cyan_700 : COLORS.white,          
+                Platform.OS === 'android' ? COLORS.cyan_700 : COLORS.white,
               headerLeft: ({onPress, focused}) => (
                 <TouchableOpacity onPress={onPress}>
-                 {/* <Image
+                  {/* <Image
                    source={icons.back}
                    resizeMode="contain"
                    style={{
@@ -135,13 +132,13 @@ const App = () => {
                      marginLeft: 20,
                      tintColor: focused ? 'gray' : 'black',}}
                  /> */}
-               </TouchableOpacity>
-             ),
+                </TouchableOpacity>
+              ),
               headerBackVisible: true,
               headerBackTitleStyle: {
                 fontSize: 12,
                 color: COLORS.cyan_700,
-                fontWeight: '500'
+                fontWeight: '500',
               },
             }}
             component={WaterUses}

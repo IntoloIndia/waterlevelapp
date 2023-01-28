@@ -81,7 +81,7 @@ const Notifications = ({title, message, date, time}) => {
 };
 
 const ShowNotification = () => {
-  let io = socketIOClient('http://192.168.0.117:8000');
+  let io = socketIOClient('http://139.59.69.40:3535');
   const [notificationsData, setNotificationsData] = useState();
 
   React.useEffect(() => {
