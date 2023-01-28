@@ -262,7 +262,6 @@ const Home = () => {
   // useEffect(() => {
   //   await updateData(id, state, setState); // API call
   // }, []);
- 
 
   function renderWarningModal() {
     return (
@@ -358,7 +357,7 @@ const Home = () => {
 
   function renderImageView() {
     return (
-      <Modal animationType="fade" transparent={true} visible={imageView}>
+      <Modal transparent={true} visible={imageView}>
         <View
           style={{
             flex: 1,
