@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {COLORS, icons} from '../constants';
 import socketIOClient from 'socket.io-client';
+import {API_URL} from '@env';
 
 const Notifications = ({title, message, date, time}) => {
   return (
@@ -81,7 +82,7 @@ const Notifications = ({title, message, date, time}) => {
 };
 
 const ShowNotification = () => {
-  let io = socketIOClient('http://192.168.0.117:8000');
+  let io = socketIOClient(API_URL);
   const [notificationsData, setNotificationsData] = useState();
 
   React.useEffect(() => {

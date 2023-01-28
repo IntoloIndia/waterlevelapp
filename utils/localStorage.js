@@ -34,6 +34,7 @@ const getObjectData = async key => {
     console.log(error);
   }
 };
+
 const removeData = async key => {
   try {
     const value = await AsyncStorage.removeItem(key);
@@ -44,6 +45,7 @@ const removeData = async key => {
     console.log(e);
   }
 };
+
 const clearStorage = async () => {
   try {
     AsyncStorage.clear();
